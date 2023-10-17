@@ -1,1 +1,1 @@
-# 3770-a1
+# COMP-3770 Assignment 2
