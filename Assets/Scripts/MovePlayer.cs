@@ -10,6 +10,7 @@ public class MovePlayer : MonoBehaviour
     private Rigidbody rb;
     public int jumpCount = 0;
     public bool canJump = true;
+    public Material finishMaterial;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +58,7 @@ public class MovePlayer : MonoBehaviour
         {
             canJump = true;
         }
+
         // planar movement
         rb.AddForce(new Vector3(verticalInput, 0, horizontalInput) * movementSpeed * Time.fixedDeltaTime);
         // jump
@@ -73,5 +75,26 @@ public class MovePlayer : MonoBehaviour
     {
         // reset jump counts when colliding
         jumpCount = 0;
+
+        // destroy coins when colliding
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Death Zone Trigger
+        if (other.CompareTag("Respawn"))
+        {
+            transform.position = new Vector3(0, 2.0f, 0);
+        }
+
+        // Finish Line Trigger
+        if (other.CompareTag("Finish"))
+        {
+            other.gameObject.GetComponent<Renderer>().material = finishMaterial;
+        }
     }
 }
